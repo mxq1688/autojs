@@ -66,6 +66,9 @@ class MainActivity : AppCompatActivity() {
         loadSettings()
         checkPermissions()
         
+        // 自动开启定时（如果无障碍服务已启用）
+        autoEnableSchedule()
+        
         // 检查是否是闹钟触发的自动工作
         handleAutoPunchIntent(intent)
     }
@@ -103,6 +106,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateServiceStatus()
+        
+        // 从设置页面返回后，检查是否可以自动开启定时
+        autoEnableSchedule()
         
         // 注册广播接收器
         val filter = IntentFilter("com.example.feishupunch.PUNCH_RESULT")
@@ -176,6 +182,22 @@ class MainActivity : AppCompatActivity() {
         
         // 加载开关状态
         binding.switchSchedule.isChecked = prefs.isScheduleEnabled()
+    }
+
+    /**
+     * 自动开启定时功能
+     */
+    private fun autoEnableSchedule() {
+        // 如果已经开启了，不重复操作
+        if (prefs.isScheduleEnabled()) {
+            return
+        }
+        
+        // 如果无障碍服务已开启，自动开启定时
+        if (isAccessibilityServiceEnabled()) {
+            binding.switchSchedule.isChecked = true
+            // enableSchedule() 会通过 OnCheckedChangeListener 自动调用
+        }
     }
     
     private fun updateMorningTimeDisplay() {
@@ -344,7 +366,7 @@ class MainActivity : AppCompatActivity() {
         val morningEnd = String.format("%02d:%02d", prefs.getMorningEndHour(), prefs.getMorningEndMinute())
         val eveningStart = String.format("%02d:%02d", prefs.getEveningStartHour(), prefs.getEveningStartMinute())
         val eveningEnd = String.format("%02d:%02d", prefs.getEveningEndHour(), prefs.getEveningEndMinute())
-        Toast.makeText(this, "定时已开启(随机触发)\n上班: $morningStart-$morningEnd\n下班: $eveningStart-$eveningEnd", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "定时已开启(随机触发)\n$morningStart-$morningEnd\n$eveningStart-$eveningEnd", Toast.LENGTH_LONG).show()
         updateStatus("定时已开启，将在时间范围内随机触发")
     }
 

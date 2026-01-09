@@ -182,7 +182,7 @@
                         android:id="@+id/tv_morning_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:40-08:50"
+                        android:text="08:50-09:20"
                         android:textSize="16sp"
                         android:textColor="#2196F3"
                         android:textStyle="bold" />
@@ -223,7 +223,7 @@
                         android:id="@+id/tv_evening_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="18:40-21:00"
+                        android:text="18:40-19:10"
                         android:textSize="16sp"
                         android:textColor="#FF9800"
                         android:textStyle="bold" />
