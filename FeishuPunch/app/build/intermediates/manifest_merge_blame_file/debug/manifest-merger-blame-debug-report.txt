@@ -67,7 +67,7 @@
 35-->[androidx.core:core:1.10.1] /Users/meng/.gradle/caches/transforms-3/b9a5353a87d2d1b9ae1b338f0f31108f/transformed/core-1.10.1/AndroidManifest.xml:26:22-94
 36
 37    <application
-37-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:24:5-94:19
+37-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:24:5-95:19
 38        android:allowBackup="true"
 38-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:25:9-35
 39        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -82,117 +82,118 @@
 44-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:28:9-50
 45        android:supportsRtl="true"
 45-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:29:9-35
-46        android:testOnly="true"
-47        android:theme="@style/Theme.FeishuPunch" >
-47-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:30:9-49
-48
-49        <!-- 主界面 -->
-50        <activity
-50-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:34:9-44:20
-51            android:name="com.example.feishupunch.MainActivity"
-51-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:35:13-41
-52            android:exported="true"
-52-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:36:13-36
-53            android:showWhenLocked="true"
-53-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:37:13-42
-54            android:theme="@style/Theme.FeishuPunch"
-54-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:39:13-53
-55            android:turnScreenOn="true" >
-55-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:38:13-40
-56            <intent-filter>
-56-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:40:13-43:29
-57                <action android:name="android.intent.action.MAIN" />
-57-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:17-69
-57-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:25-66
-58
-59                <category android:name="android.intent.category.LAUNCHER" />
-59-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:17-77
-59-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:27-74
-60            </intent-filter>
-61        </activity>
-62
-63        <!-- 唤醒屏幕专用 Activity -->
-64        <activity
-64-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:47:9-54:56
-65            android:name="com.example.feishupunch.WakeUpActivity"
-65-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:48:13-43
-66            android:excludeFromRecents="true"
-66-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:52:13-46
-67            android:exported="false"
-67-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:49:13-37
+46        android:theme="@style/Theme.FeishuPunch" >
+46-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:30:9-49
+47
+48        <!-- 主界面 -->
+49        <activity
+49-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:34:9-44:20
+50            android:name="com.example.feishupunch.MainActivity"
+50-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:35:13-41
+51            android:exported="true"
+51-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:36:13-36
+52            android:showWhenLocked="true"
+52-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:37:13-42
+53            android:theme="@style/Theme.FeishuPunch"
+53-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:39:13-53
+54            android:turnScreenOn="true" >
+54-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:38:13-40
+55            <intent-filter>
+55-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:40:13-43:29
+56                <action android:name="android.intent.action.MAIN" />
+56-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:17-69
+56-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:25-66
+57
+58                <category android:name="android.intent.category.LAUNCHER" />
+58-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:17-77
+58-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:27-74
+59            </intent-filter>
+60        </activity>
+61
+62        <!-- 唤醒屏幕专用 Activity -->
+63        <activity
+63-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:47:9-55:56
+64            android:name="com.example.feishupunch.WakeUpActivity"
+64-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:48:13-43
+65            android:excludeFromRecents="true"
+65-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:53:13-46
+66            android:exported="false"
+66-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:49:13-37
+67            android:launchMode="singleTask"
+67-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:50:13-44
 68            android:showWhenLocked="true"
-68-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:50:13-42
+68-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:51:13-42
 69            android:taskAffinity=""
-69-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:53:13-36
+69-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:54:13-36
 70            android:theme="@style/Theme.FeishuPunch"
-70-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:54:13-53
+70-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:55:13-53
 71            android:turnScreenOn="true" />
-71-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:51:13-40
+71-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:52:13-40
 72
 73        <!-- 无障碍服务 -->
 74        <service
-74-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:57:9-67:19
+74-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:58:9-68:19
 75            android:name="com.example.feishupunch.service.PunchAccessibilityService"
-75-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:58:13-62
+75-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:59:13-62
 76            android:exported="false"
-76-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:59:13-37
+76-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:60:13-37
 77            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
-77-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:60:13-79
+77-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:61:13-79
 78            <intent-filter>
-78-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:61:13-63:29
+78-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:62:13-64:29
 79                <action android:name="android.accessibilityservice.AccessibilityService" />
-79-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:62:17-92
-79-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:62:25-89
+79-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:63:17-92
+79-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:63:25-89
 80            </intent-filter>
 81
 82            <meta-data
-82-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:64:13-66:72
+82-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:65:13-67:72
 83                android:name="android.accessibilityservice"
-83-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:65:17-60
+83-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:66:17-60
 84                android:resource="@xml/accessibility_service_config" />
-84-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:66:17-69
+84-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:67:17-69
 85        </service>
 86
 87        <!-- 前台服务 -->
 88        <service
-88-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:70:9-73:58
+88-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:71:9-74:58
 89            android:name="com.example.feishupunch.service.PunchForegroundService"
-89-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:71:13-59
+89-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:72:13-59
 90            android:exported="false"
-90-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:72:13-37
+90-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:73:13-37
 91            android:foregroundServiceType="specialUse" />
-91-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:73:13-55
+91-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:74:13-55
 92
 93        <!-- 开机广播接收器 -->
 94        <receiver
-94-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:76:9-82:20
+94-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:77:9-83:20
 95            android:name="com.example.feishupunch.receiver.BootReceiver"
-95-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:77:13-50
+95-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:78:13-50
 96            android:exported="false" >
-96-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:78:13-37
+96-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:79:13-37
 97            <intent-filter>
-97-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:79:13-81:29
+97-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:13-82:29
 98                <action android:name="android.intent.action.BOOT_COMPLETED" />
-98-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:17-79
-98-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:25-76
+98-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:17-79
+98-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:25-76
 99            </intent-filter>
 100        </receiver>
 101
 102        <!-- 闹钟广播接收器 -->
 103        <receiver
-103-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:85:9-92:20
+103-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:86:9-93:20
 104            android:name="com.example.feishupunch.receiver.AlarmReceiver"
-104-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:86:13-51
+104-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:87:13-51
 105            android:exported="false" >
-105-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:87:13-37
+105-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:88:13-37
 106            <intent-filter>
-106-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:88:13-91:29
+106-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:89:13-92:29
 107                <action android:name="com.example.feishupunch.MORNING_PUNCH" />
-107-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:89:17-80
-107-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:89:25-77
+107-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:17-80
+107-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:25-77
 108                <action android:name="com.example.feishupunch.EVENING_PUNCH" />
-108-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:17-80
-108-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:25-77
+108-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:91:17-80
+108-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:91:25-77
 109            </intent-filter>
 110        </receiver>
 111
@@ -363,8 +364,8 @@
 196            <intent-filter>
 196-->[androidx.work:work-runtime:2.8.1] /Users/meng/.gradle/caches/transforms-3/139075c08d087f904ddf0c041f55de44/transformed/work-runtime-2.8.1/AndroidManifest.xml:116:13-120:29
 197                <action android:name="android.intent.action.BOOT_COMPLETED" />
-197-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:17-79
-197-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:25-76
+197-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:17-79
+197-->/Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:25-76
 198                <action android:name="android.intent.action.TIME_SET" />
 198-->[androidx.work:work-runtime:2.8.1] /Users/meng/.gradle/caches/transforms-3/139075c08d087f904ddf0c041f55de44/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:17-73
 198-->[androidx.work:work-runtime:2.8.1] /Users/meng/.gradle/caches/transforms-3/139075c08d087f904ddf0c041f55de44/transformed/work-runtime-2.8.1/AndroidManifest.xml:118:25-70

@@ -1,0 +1,4 @@
+com.example.feishupunch.test.app-androidTest-0 /Users/meng/stu/autojs/FeishuPunch/app/build/generated/res/resValues/androidTest/debug
+com.example.feishupunch.test.app-mergeDebugAndroidTestResources-1 /Users/meng/stu/autojs/FeishuPunch/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.example.feishupunch.test.app-mergeDebugAndroidTestResources-2 /Users/meng/stu/autojs/FeishuPunch/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.example.feishupunch.test.app-merged_res-3 /Users/meng/stu/autojs/FeishuPunch/app/build/intermediates/merged_res/debugAndroidTest
