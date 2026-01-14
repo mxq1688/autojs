@@ -97,7 +97,7 @@ class PunchForegroundService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("乐逍遥")
-            .setContentText("服务运行中，等待定时...")
+            .setContentText("服务运行中，等待去逍遥...")
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
