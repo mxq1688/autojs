@@ -178,10 +178,147 @@ class MainActivity : AppCompatActivity() {
             checkFeishuInstalled()
         }
         
+        // 星期选择监听
+        val dayChipListener = { _: android.widget.CompoundButton, _: Boolean ->
+            saveDaySelection()
+        }
+        binding.chipMonday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipTuesday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipWednesday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipThursday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipFriday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipSaturday.setOnCheckedChangeListener(dayChipListener)
+        binding.chipSunday.setOnCheckedChangeListener(dayChipListener)
+        
         // 添加关闭时间按钮
         binding.btnAddCloseTime.setOnClickListener {
             showAddCloseTimePicker()
         }
+        
+        // APP选择监听
+        binding.radioGroupApp.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_feishu -> {
+                    prefs.setTargetAppType(PreferenceHelper.APP_TYPE_FEISHU)
+                    binding.layoutCustomPackage.visibility = android.view.View.GONE
+                }
+                R.id.radio_dingtalk -> {
+                    prefs.setTargetAppType(PreferenceHelper.APP_TYPE_DINGTALK)
+                    binding.layoutCustomPackage.visibility = android.view.View.GONE
+                }
+                R.id.radio_custom -> {
+                    prefs.setTargetAppType(PreferenceHelper.APP_TYPE_CUSTOM)
+                    binding.layoutCustomPackage.visibility = android.view.View.VISIBLE
+                }
+            }
+            updateCurrentPackageDisplay()
+        }
+        
+        // 自定义包名输入监听
+        binding.etCustomPackage.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                prefs.setCustomPackage(s?.toString() ?: "")
+                updateCurrentPackageDisplay()
+            }
+        })
+        
+        // 选择APP按钮
+        binding.btnSelectApp.setOnClickListener {
+            showAppListDialog()
+        }
+    }
+    
+    /**
+     * APP信息数据类
+     */
+    data class AppInfo(
+        val name: String,
+        val packageName: String,
+        val icon: android.graphics.drawable.Drawable?
+    )
+    
+    /**
+     * 显示已安装APP列表对话框
+     */
+    private fun showAppListDialog() {
+        // 显示加载提示
+        val progressDialog = AlertDialog.Builder(this)
+            .setTitle("加载中...")
+            .setMessage("正在获取已安装的APP列表")
+            .setCancelable(false)
+            .create()
+        progressDialog.show()
+        
+        // 在后台线程获取APP列表
+        Thread {
+            val apps = getInstalledApps()
+            
+            runOnUiThread {
+                progressDialog.dismiss()
+                
+                if (apps.isEmpty()) {
+                    Toast.makeText(this, "未找到已安装的APP", Toast.LENGTH_SHORT).show()
+                    return@runOnUiThread
+                }
+                
+                // 创建APP名称数组
+                val appNames = apps.map { "${it.name}\n${it.packageName}" }.toTypedArray()
+                
+                AlertDialog.Builder(this)
+                    .setTitle("选择目标APP (${apps.size}个)")
+                    .setItems(appNames) { _, which ->
+                        val selectedApp = apps[which]
+                        binding.etCustomPackage.setText(selectedApp.packageName)
+                        Toast.makeText(this, "已选择: ${selectedApp.name}", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("取消", null)
+                    .show()
+            }
+        }.start()
+    }
+    
+    /**
+     * 获取已安装的APP列表（排除系统APP，按名称排序）
+     */
+    private fun getInstalledApps(): List<AppInfo> {
+        val pm = packageManager
+        val apps = mutableListOf<AppInfo>()
+        
+        try {
+            val packages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getInstalledApplications(android.content.pm.PackageManager.ApplicationInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                pm.getInstalledApplications(0)
+            }
+            
+            for (appInfo in packages) {
+                // 排除系统APP（可选：保留用户可能需要的系统APP）
+                val isSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
+                val isUpdatedSystemApp = (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
+                
+                // 只保留非系统APP或已更新的系统APP（如微信、支付宝等预装但用户更新过的APP）
+                if (!isSystemApp || isUpdatedSystemApp) {
+                    val name = pm.getApplicationLabel(appInfo).toString()
+                    val icon = try {
+                        pm.getApplicationIcon(appInfo)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    apps.add(AppInfo(name, appInfo.packageName, icon))
+                }
+            }
+            
+            // 按名称排序
+            apps.sortBy { it.name }
+            
+        } catch (e: Exception) {
+            android.util.Log.e("MainActivity", "获取APP列表失败: ${e.message}")
+        }
+        
+        return apps
     }
 
     private fun loadSettings() {
@@ -192,8 +329,102 @@ class MainActivity : AppCompatActivity() {
         // 加载关闭飞书时间
         updateCloseTimeDisplay()
         
+        // 加载星期选择
+        loadDaySelection()
+        
+        // 加载目标APP选择
+        loadAppSelection()
+        
         // 加载开关状态
         binding.switchSchedule.isChecked = prefs.isScheduleEnabled()
+    }
+    
+    /**
+     * 加载目标APP选择
+     */
+    private fun loadAppSelection() {
+        when (prefs.getTargetAppType()) {
+            PreferenceHelper.APP_TYPE_FEISHU -> {
+                binding.radioFeishu.isChecked = true
+                binding.layoutCustomPackage.visibility = android.view.View.GONE
+            }
+            PreferenceHelper.APP_TYPE_DINGTALK -> {
+                binding.radioDingtalk.isChecked = true
+                binding.layoutCustomPackage.visibility = android.view.View.GONE
+            }
+            PreferenceHelper.APP_TYPE_CUSTOM -> {
+                binding.radioCustom.isChecked = true
+                binding.layoutCustomPackage.visibility = android.view.View.VISIBLE
+                binding.etCustomPackage.setText(prefs.getCustomPackage())
+            }
+        }
+        updateCurrentPackageDisplay()
+    }
+    
+    /**
+     * 更新当前包名显示
+     */
+    private fun updateCurrentPackageDisplay() {
+        binding.tvCurrentPackage.text = "当前: ${prefs.getTargetPackage()}"
+    }
+    
+    /**
+     * 加载星期选择状态
+     */
+    private fun loadDaySelection() {
+        val selectedDays = prefs.getSelectedDays()
+        // Calendar: 1=周日, 2=周一, 3=周二, 4=周三, 5=周四, 6=周五, 7=周六
+        binding.chipSunday.isChecked = selectedDays.contains(1)
+        binding.chipMonday.isChecked = selectedDays.contains(2)
+        binding.chipTuesday.isChecked = selectedDays.contains(3)
+        binding.chipWednesday.isChecked = selectedDays.contains(4)
+        binding.chipThursday.isChecked = selectedDays.contains(5)
+        binding.chipFriday.isChecked = selectedDays.contains(6)
+        binding.chipSaturday.isChecked = selectedDays.contains(7)
+    }
+    
+    /**
+     * 保存星期选择
+     */
+    private fun saveDaySelection() {
+        val selectedDays = mutableSetOf<Int>()
+        // Calendar: 1=周日, 2=周一, 3=周二, 4=周三, 5=周四, 6=周五, 7=周六
+        if (binding.chipSunday.isChecked) selectedDays.add(1)
+        if (binding.chipMonday.isChecked) selectedDays.add(2)
+        if (binding.chipTuesday.isChecked) selectedDays.add(3)
+        if (binding.chipWednesday.isChecked) selectedDays.add(4)
+        if (binding.chipThursday.isChecked) selectedDays.add(5)
+        if (binding.chipFriday.isChecked) selectedDays.add(6)
+        if (binding.chipSaturday.isChecked) selectedDays.add(7)
+        
+        prefs.setSelectedDays(selectedDays)
+        updateDaySelectionStatus()
+    }
+    
+    /**
+     * 更新星期选择显示状态
+     */
+    private fun updateDaySelectionStatus() {
+        val selectedDays = prefs.getSelectedDays()
+        val dayNames = mutableListOf<String>()
+        if (selectedDays.contains(2)) dayNames.add("周一")
+        if (selectedDays.contains(3)) dayNames.add("周二")
+        if (selectedDays.contains(4)) dayNames.add("周三")
+        if (selectedDays.contains(5)) dayNames.add("周四")
+        if (selectedDays.contains(6)) dayNames.add("周五")
+        if (selectedDays.contains(7)) dayNames.add("周六")
+        if (selectedDays.contains(1)) dayNames.add("周日")
+        
+        val statusText = if (dayNames.isEmpty()) {
+            "未选择执行日期"
+        } else if (dayNames.size == 7) {
+            "每天执行"
+        } else if (selectedDays.containsAll(listOf(2, 3, 4, 5, 6)) && selectedDays.size == 5) {
+            "工作日执行"
+        } else {
+            dayNames.joinToString("、") + " 执行"
+        }
+        updateStatus(statusText)
     }
 
     /**
@@ -496,21 +727,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkFeishuInstalled() {
+        val targetPackage = prefs.getTargetPackage()
+        val targetName = prefs.getTargetAppName()
+        
+        if (targetPackage.isEmpty()) {
+            Toast.makeText(this, "❌ 请先设置目标APP包名", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
         try {
-            packageManager.getPackageInfo(PunchAccessibilityService.FEISHU_PACKAGE, 0)
-            Toast.makeText(this, "✅ 目标APP已安装", Toast.LENGTH_SHORT).show()
+            packageManager.getPackageInfo(targetPackage, 0)
+            Toast.makeText(this, "✅ $targetName 已安装 ($targetPackage)", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            AlertDialog.Builder(this)
-                .setTitle("未检测到目标APP")
-                .setMessage("请先安装飞书APP")
-                .setPositiveButton("去下载") { _, _ ->
+            val downloadUrl = when (prefs.getTargetAppType()) {
+                PreferenceHelper.APP_TYPE_FEISHU -> "https://www.feishu.cn/download"
+                PreferenceHelper.APP_TYPE_DINGTALK -> "https://www.dingtalk.com/download"
+                else -> null
+            }
+            
+            val builder = AlertDialog.Builder(this)
+                .setTitle("未检测到$targetName")
+                .setMessage("包名: $targetPackage\n\n请先安装该APP")
+                .setNegativeButton("取消", null)
+            
+            if (downloadUrl != null) {
+                builder.setPositiveButton("去下载") { _, _ ->
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://www.feishu.cn/download")
+                        data = Uri.parse(downloadUrl)
                     }
                     startActivity(intent)
                 }
-                .setNegativeButton("取消", null)
-                .show()
+            }
+            
+            builder.show()
         }
     }
 }

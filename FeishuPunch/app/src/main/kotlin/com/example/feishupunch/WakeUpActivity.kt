@@ -13,15 +13,15 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.feishupunch.service.PunchAccessibilityService
+import com.example.feishupunch.util.PreferenceHelper
 
 /**
- * 唤醒屏幕并打开飞书
+ * 唤醒屏幕并打开目标APP
  */
 class WakeUpActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "WakeUpActivity"
-        private const val FEISHU_PACKAGE = "com.ss.android.lark"
         
         // 防止重复执行的标志
         @Volatile
@@ -34,6 +34,7 @@ class WakeUpActivity : AppCompatActivity() {
 
     private var wakeLock: PowerManager.WakeLock? = null
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var prefs: PreferenceHelper
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +43,10 @@ class WakeUpActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         
-        Log.d(TAG, "WakeUpActivity 启动 - 息屏唤醒")
+        prefs = PreferenceHelper(this)
+        val targetName = prefs.getTargetAppName()
+        
+        Log.d(TAG, "WakeUpActivity 启动 - 息屏唤醒，目标: $targetName")
         
         // 检查是否在短时间内重复执行（60秒内）
         val now = System.currentTimeMillis()
@@ -74,7 +78,7 @@ class WakeUpActivity : AppCompatActivity() {
         
         // 设置一个简单的视图
         val textView = TextView(this).apply {
-            text = "正在打开飞书..."
+            text = "正在打开$targetName..."
             textSize = 24f
             setPadding(100, 200, 100, 200)
             setBackgroundColor(0xFFFFFFFF.toInt())
@@ -84,9 +88,9 @@ class WakeUpActivity : AppCompatActivity() {
         // 先让无障碍服务双击唤醒屏幕
         PunchAccessibilityService.instance?.doubleTapToWake()
         
-        // 2秒后打开飞书
+        // 2秒后打开目标APP
         handler.postDelayed({
-            launchFeishu()
+            launchTargetApp()
         }, 2000)
     }
 
@@ -107,21 +111,23 @@ class WakeUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchFeishu() {
-        Log.d(TAG, "打开飞书")
+    private fun launchTargetApp() {
+        val targetPackage = prefs.getTargetPackage()
+        val targetName = prefs.getTargetAppName()
+        Log.d(TAG, "打开$targetName: $targetPackage")
         
         try {
-            val intent = packageManager.getLaunchIntentForPackage(FEISHU_PACKAGE)
+            val intent = packageManager.getLaunchIntentForPackage(targetPackage)
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
-                Log.d(TAG, "飞书已启动")
+                Log.d(TAG, "$targetName 已启动")
             } else {
-                Log.e(TAG, "未找到飞书")
+                Log.e(TAG, "未找到$targetName")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "启动飞书失败: ${e.message}")
+            Log.e(TAG, "启动$targetName 失败: ${e.message}")
         }
         
         // 关闭自己

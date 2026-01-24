@@ -13,17 +13,15 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
+import com.example.feishupunch.util.PreferenceHelper
 
 /**
- * 无障碍服务 - 用于自动操作飞书工作
+ * 无障碍服务 - 用于自动操作打卡
  */
 class PunchAccessibilityService : AccessibilityService() {
 
     companion object {
         private const val TAG = "PunchService"
-        
-        // 飞书包名
-        const val FEISHU_PACKAGE = "com.ss.android.lark"
         
         // 服务实例（用于外部调用）
         var instance: PunchAccessibilityService? = null
@@ -40,6 +38,11 @@ class PunchAccessibilityService : AccessibilityService() {
         private const val STEP_DO_PUNCH = 4
         private const val STEP_DONE = 5
     }
+    
+    private lateinit var prefs: PreferenceHelper
+    
+    // 当前目标包名
+    private var targetPackage: String = PreferenceHelper.PACKAGE_FEISHU
 
     private val handler = Handler(Looper.getMainLooper())
     private var currentStep = STEP_IDLE
@@ -49,6 +52,7 @@ class PunchAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
+        prefs = PreferenceHelper(this)
         Log.d(TAG, "无障碍服务已连接")
         Toast.makeText(this, "乐逍遥服务已启动", Toast.LENGTH_SHORT).show()
     }
@@ -57,7 +61,7 @@ class PunchAccessibilityService : AccessibilityService() {
         if (!isPunching) return
         
         event?.let {
-            if (it.packageName == FEISHU_PACKAGE) {
+            if (it.packageName == targetPackage) {
                 // 延迟处理，等待页面加载
                 handler.postDelayed({
                     processCurrentStep()
@@ -85,14 +89,23 @@ class PunchAccessibilityService : AccessibilityService() {
             return
         }
         
+        // 获取当前目标包名
+        targetPackage = prefs.getTargetPackage()
+        Log.d(TAG, "目标APP包名: $targetPackage")
+        
+        if (targetPackage.isEmpty()) {
+            finishPunch(false, "未设置目标APP")
+            return
+        }
+        
         isPunching = true
         currentStep = STEP_LAUNCH_APP
         retryCount = 0
         
-        Log.d(TAG, "开始工作流程")
+        Log.d(TAG, "开始工作流程，目标: ${prefs.getTargetAppName()}")
         
-        // 直接启动飞书（屏幕唤醒由 WakeUpActivity 负责）
-        launchFeishu()
+        // 启动目标 APP（屏幕唤醒由 WakeUpActivity 负责）
+        launchTargetApp()
         
         // 设置超时
         handler.postDelayed({
@@ -104,14 +117,14 @@ class PunchAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * 启动飞书APP
+     * 启动目标APP
      */
-    private fun launchFeishu() {
+    private fun launchTargetApp() {
         try {
             // 先唤醒屏幕
             wakeUpScreen()
             
-            val intent = packageManager.getLaunchIntentForPackage(FEISHU_PACKAGE)
+            val intent = packageManager.getLaunchIntentForPackage(targetPackage)
             if (intent != null) {
                 // 添加多个flags确保APP被带到前台
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -119,7 +132,7 @@ class PunchAccessibilityService : AccessibilityService() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
-                Log.d(TAG, "飞书启动成功")
+                Log.d(TAG, "${prefs.getTargetAppName()} 启动成功")
                 
                 currentStep = STEP_FIND_WORK_TAB
                 
@@ -128,10 +141,10 @@ class PunchAccessibilityService : AccessibilityService() {
                     processCurrentStep()
                 }, 5000)
             } else {
-                finishPunch(false, "未找到目标APP")
+                finishPunch(false, "未找到目标APP: $targetPackage")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "启动飞书失败: ${e.message}")
+            Log.e(TAG, "启动APP失败: ${e.message}")
             finishPunch(false, "启动APP失败")
         }
     }
@@ -184,7 +197,11 @@ class PunchAccessibilityService : AccessibilityService() {
     private fun findAndClickWorkTab(rootNode: AccessibilityNodeInfo) {
         Log.d(TAG, "查找工作台...")
         
-        val workTabTexts = listOf("工作台", "工作", "Workplace")
+        // 根据不同 APP 使用不同关键词
+        val workTabTexts = when (prefs.getTargetAppType()) {
+            PreferenceHelper.APP_TYPE_DINGTALK -> listOf("工作台", "工作", "Workbench")
+            else -> listOf("工作台", "工作", "Workplace")  // 飞书和自定义
+        }
         
         for (text in workTabTexts) {
             val nodes = rootNode.findAccessibilityNodeInfosByText(text)
@@ -202,19 +219,22 @@ class PunchAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * 查找并点击"假勤"入口
+     * 查找并点击考勤入口
      */
     private fun findAndClickAttendance(rootNode: AccessibilityNodeInfo) {
-        Log.d(TAG, "查找假勤入口...")
+        Log.d(TAG, "查找考勤入口...")
         
-        // 只查找"假勤"
-        val attendanceTexts = listOf("假勤")
+        // 根据不同 APP 使用不同关键词
+        val attendanceTexts = when (prefs.getTargetAppType()) {
+            PreferenceHelper.APP_TYPE_DINGTALK -> listOf("考勤打卡", "智能考勤", "考勤")
+            else -> listOf("假勤", "考勤打卡", "考勤")  // 飞书和自定义
+        }
         
         for (text in attendanceTexts) {
             val nodes = rootNode.findAccessibilityNodeInfosByText(text)
             for (node in nodes) {
                 if (clickNode(node)) {
-                    Log.d(TAG, "点击假勤入口成功")
+                    Log.d(TAG, "点击考勤入口成功: $text")
                     currentStep = STEP_DO_PUNCH
                     handler.postDelayed({ processCurrentStep() }, 5000)
                     return

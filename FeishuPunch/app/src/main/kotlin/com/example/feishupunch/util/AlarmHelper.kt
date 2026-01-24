@@ -80,7 +80,7 @@ class AlarmHelper(private val context: Context) {
     }
 
     /**
-     * 设置多个关闭飞书闹钟
+     * 设置多个关闭APP闹钟
      */
     fun setCloseAppAlarms(times: List<CloseTime>) {
         // 先取消所有关闭闹钟
@@ -91,10 +91,10 @@ class AlarmHelper(private val context: Context) {
             if (index < MAX_CLOSE_ALARMS) {
                 val calendar = getNextAlarmTime(time.hour, time.minute)
                 val intent = Intent(context, AlarmReceiver::class.java).apply {
-                    action = AlarmReceiver.ACTION_CLOSE_FEISHU
+                    action = AlarmReceiver.ACTION_CLOSE_APP
                 }
                 setAlarm(calendar.timeInMillis, intent, CLOSE_APP_BASE_REQUEST_CODE + index)
-                Log.d(TAG, "关闭飞书闹钟已设置: ${time.toDisplayString()}")
+                Log.d(TAG, "关闭APP闹钟已设置: ${time.toDisplayString()}")
             }
         }
     }
@@ -104,7 +104,7 @@ class AlarmHelper(private val context: Context) {
      */
     private fun cancelAllCloseAlarms() {
         for (i in 0 until MAX_CLOSE_ALARMS) {
-            cancelAlarm(AlarmReceiver.ACTION_CLOSE_FEISHU, CLOSE_APP_BASE_REQUEST_CODE + i)
+            cancelAlarm(AlarmReceiver.ACTION_CLOSE_APP, CLOSE_APP_BASE_REQUEST_CODE + i)
         }
     }
 

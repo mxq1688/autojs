@@ -3118,6 +3118,7 @@ int id btn_accessibility 0x7f080062
 int id btn_add_close_time 0x7f080063
 int id btn_check_feishu 0x7f080064
 int id btn_punch_now 0x7f080065
+int id btn_select_app 0x7f0801f9
 int id buttonPanel 0x7f080066
 int id cache_measures 0x7f080067
 int id callMeasure 0x7f080068
@@ -3133,6 +3134,13 @@ int id chain2 0x7f080071
 int id chains 0x7f080072
 int id checkbox 0x7f080073
 int id checked 0x7f080074
+int id chip_friday 0x7f0801fa
+int id chip_monday 0x7f0801fb
+int id chip_saturday 0x7f0801fc
+int id chip_sunday 0x7f0801fd
+int id chip_thursday 0x7f0801fe
+int id chip_tuesday 0x7f0801ff
+int id chip_wednesday 0x7f080200
 int id chronometer 0x7f080075
 int id circle_center 0x7f080076
 int id clear_text 0x7f080077
@@ -3199,6 +3207,7 @@ int id end 0x7f0800b3
 int id endToStart 0x7f0800b4
 int id enterAlways 0x7f0800b5
 int id enterAlwaysCollapsed 0x7f0800b6
+int id et_custom_package 0x7f080201
 int id exitUntilCollapsed 0x7f0800b7
 int id expand_activities_button 0x7f0800b8
 int id expanded_menu 0x7f0800b9
@@ -3251,6 +3260,7 @@ int id jumpToEnd 0x7f0800e7
 int id jumpToStart 0x7f0800e8
 int id labeled 0x7f0800e9
 int id layout 0x7f0800ea
+int id layout_custom_package 0x7f080202
 int id layout_evening_time 0x7f0800eb
 int id layout_morning_time 0x7f0800ec
 int id left 0x7f0800ed
@@ -3363,6 +3373,10 @@ int id pressed 0x7f080157
 int id progress_circular 0x7f080158
 int id progress_horizontal 0x7f080159
 int id radio 0x7f08015a
+int id radio_custom 0x7f080203
+int id radio_dingtalk 0x7f080204
+int id radio_feishu 0x7f080205
+int id radio_group_app 0x7f080206
 int id ratio 0x7f08015b
 int id rectangles 0x7f08015c
 int id reverseSawtooth 0x7f08015d
@@ -3494,6 +3508,7 @@ int id transition_position 0x7f0801da
 int id transition_scene_layoutid_cache 0x7f0801db
 int id transition_transform 0x7f0801dc
 int id triangle 0x7f0801dd
+int id tv_current_package 0x7f080207
 int id tv_evening_time 0x7f0801de
 int id tv_morning_time 0x7f0801df
 int id tv_service_status 0x7f0801e0

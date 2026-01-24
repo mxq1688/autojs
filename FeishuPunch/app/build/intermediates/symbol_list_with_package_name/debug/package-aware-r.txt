@@ -3119,6 +3119,7 @@ id btn_accessibility
 id btn_add_close_time
 id btn_check_feishu
 id btn_punch_now
+id btn_select_app
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3134,6 +3135,13 @@ id chain2
 id chains
 id checkbox
 id checked
+id chip_friday
+id chip_monday
+id chip_saturday
+id chip_sunday
+id chip_thursday
+id chip_tuesday
+id chip_wednesday
 id chronometer
 id circle_center
 id clear_text
@@ -3200,6 +3208,7 @@ id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
+id et_custom_package
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -3252,6 +3261,7 @@ id jumpToEnd
 id jumpToStart
 id labeled
 id layout
+id layout_custom_package
 id layout_evening_time
 id layout_morning_time
 id left
@@ -3364,6 +3374,10 @@ id pressed
 id progress_circular
 id progress_horizontal
 id radio
+id radio_custom
+id radio_dingtalk
+id radio_feishu
+id radio_group_app
 id ratio
 id rectangles
 id reverseSawtooth
@@ -3495,6 +3509,7 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_current_package
 id tv_evening_time
 id tv_morning_time
 id tv_service_status

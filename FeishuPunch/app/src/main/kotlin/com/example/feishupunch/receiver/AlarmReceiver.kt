@@ -15,6 +15,7 @@ import com.example.feishupunch.WakeUpActivity
 import com.example.feishupunch.service.PunchAccessibilityService
 import com.example.feishupunch.util.AlarmHelper
 import com.example.feishupunch.util.PreferenceHelper
+import java.util.Calendar
 
 /**
  * 闹钟广播接收器 - 触发工作
@@ -25,10 +26,9 @@ class AlarmReceiver : BroadcastReceiver() {
         private const val TAG = "AlarmReceiver"
         const val ACTION_MORNING_PUNCH = "com.example.feishupunch.MORNING_PUNCH"
         const val ACTION_EVENING_PUNCH = "com.example.feishupunch.EVENING_PUNCH"
-        const val ACTION_CLOSE_FEISHU = "com.example.feishupunch.CLOSE_FEISHU"
+        const val ACTION_CLOSE_APP = "com.example.feishupunch.CLOSE_APP"
         private const val CHANNEL_ID = "punch_alarm_channel"
         private const val NOTIFICATION_ID = 9999
-        private const val FEISHU_PACKAGE = "com.ss.android.lark"
         
         // 静态 WakeLock 防止被回收
         @Volatile
@@ -44,47 +44,67 @@ class AlarmReceiver : BroadcastReceiver() {
         
         // 处理不同类型的闹钟
         val prefs = PreferenceHelper(context)
+        val alarmHelper = AlarmHelper(context)
+        
+        // 检查今天是否是选中的星期
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        val shouldExecuteToday = prefs.isDaySelected(today)
+        Log.d(TAG, "今天是星期 $today，是否执行: $shouldExecuteToday")
+        
         when (action) {
             ACTION_MORNING_PUNCH -> {
-                // 使用全屏通知唤醒屏幕
-                showFullScreenNotification(context)
-                // 重新设置明天的闹钟（时间范围随机）
-                AlarmHelper(context).setMorningAlarm(
+                if (shouldExecuteToday) {
+                    // 使用全屏通知唤醒屏幕
+                    showFullScreenNotification(context)
+                } else {
+                    Log.d(TAG, "今天不执行上班打卡")
+                }
+                // 重新设置下一次的闹钟（时间范围随机）
+                alarmHelper.setMorningAlarm(
                     prefs.getMorningStartHour(), prefs.getMorningStartMinute(),
                     prefs.getMorningEndHour(), prefs.getMorningEndMinute()
                 )
             }
             ACTION_EVENING_PUNCH -> {
-                // 使用全屏通知唤醒屏幕
-                showFullScreenNotification(context)
-                // 重新设置明天的闹钟（时间范围随机）
-                AlarmHelper(context).setEveningAlarm(
+                if (shouldExecuteToday) {
+                    // 使用全屏通知唤醒屏幕
+                    showFullScreenNotification(context)
+                } else {
+                    Log.d(TAG, "今天不执行下班打卡")
+                }
+                // 重新设置下一次的闹钟（时间范围随机）
+                alarmHelper.setEveningAlarm(
                     prefs.getEveningStartHour(), prefs.getEveningStartMinute(),
                     prefs.getEveningEndHour(), prefs.getEveningEndMinute()
                 )
             }
-            ACTION_CLOSE_FEISHU -> {
-                // 关闭飞书
-                closeFeishu(context)
-                // 重新设置明天的闹钟（使用配置的时间列表）
-                val prefs = PreferenceHelper(context)
-                AlarmHelper(context).setCloseAppAlarms(prefs.getCloseTimes())
+            ACTION_CLOSE_APP -> {
+                if (shouldExecuteToday) {
+                    // 关闭目标 APP
+                    closeTargetApp(context, prefs)
+                } else {
+                    Log.d(TAG, "今天不执行关闭APP")
+                }
+                // 重新设置下一次的闹钟（使用配置的时间列表）
+                alarmHelper.setCloseAppAlarms(prefs.getCloseTimes())
             }
         }
     }
 
     /**
-     * 关闭飞书
+     * 关闭目标 APP
      */
-    private fun closeFeishu(context: Context) {
-        Log.d(TAG, "执行关闭飞书")
+    private fun closeTargetApp(context: Context, prefs: PreferenceHelper) {
+        val targetPackage = prefs.getTargetPackage()
+        val targetName = prefs.getTargetAppName()
+        Log.d(TAG, "执行关闭$targetName: $targetPackage")
         
         try {
-            // 使用无障碍服务关闭飞书
-            PunchAccessibilityService.instance?.closeApp(FEISHU_PACKAGE)
-            Log.d(TAG, "已请求关闭飞书")
+            // 使用无障碍服务关闭 APP
+            PunchAccessibilityService.instance?.closeApp(targetPackage)
+            Log.d(TAG, "已请求关闭$targetName")
         } catch (e: Exception) {
-            Log.e(TAG, "关闭飞书失败: ${e.message}")
+            Log.e(TAG, "关闭$targetName 失败: ${e.message}")
         }
     }
 
