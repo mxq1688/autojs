@@ -12,10 +12,6 @@
         "source": "com.example.feishupunch.app-main-40:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/xml_accessibility_service_config.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/xml/accessibility_service_config.xml"
-    },
-    {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_notification.xml.flat",
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_notification.xml"
     },
@@ -28,12 +24,12 @@
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_launcher.xml.flat",
-        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_launcher.xml"
-    },
-    {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/xml_accessibility_service_config.xml.flat",
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/xml/accessibility_service_config.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_launcher.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_launcher.xml"
     },
     {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_evening.xml.flat",
